@@ -11,7 +11,7 @@ namespace Cab_Invoice_Generator_Testing
         {
             InvoiceGenerator invoice = new InvoiceGenerator();
 
-            double actual = invoice.CalculateFair(12, 30);
+            double actual = invoice.CalculateFare(12, 30);
 
             double expected = 150;
 
@@ -25,7 +25,7 @@ namespace Cab_Invoice_Generator_Testing
 
             try
             {
-                double actual = invoice.CalculateFair(12, 0);
+                double actual = invoice.CalculateFare(12, 0);
             }
             catch (InvoiceGeneratorException ex)
             {
@@ -41,7 +41,7 @@ namespace Cab_Invoice_Generator_Testing
 
             try
             {
-                double actual = invoice.CalculateFair(0, 10);
+                double actual = invoice.CalculateFare(0, 10);
             }
             catch (InvoiceGeneratorException ex)
             {
@@ -55,13 +55,17 @@ namespace Cab_Invoice_Generator_Testing
         {
             InvoiceGenerator invoice = new InvoiceGenerator();
 
-            Rides[] rides = { new Rides(15.5, 5), new Rides(180, 240) };
+            try
+            {
+                Rides[] rides = null;
 
-            double actual = invoice.CalculateFair(rides);
+                invoice.CalculateFare(rides);
+            }
+            catch (InvoiceGeneratorException ex)
+            {
+                Assert.AreEqual("Null Rides", ex.Message);
+            }
 
-            double expected = 2200;
-
-            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -69,35 +73,23 @@ namespace Cab_Invoice_Generator_Testing
         {
             InvoiceGenerator invoice = new InvoiceGenerator();
 
-            try
-            {
-                Rides[] rides = { new Rides(15.5, 0), new Rides(180, 240) };
+            Rides[] rides = { new Rides(15.5, 5), new Rides(180, 240) };
 
-                double actual = invoice.CalculateFair(rides);
-            }
-            catch (InvoiceGeneratorException ex)
-            {
-                Assert.AreEqual("Invalid Time", ex.Message);
-            }
+            InvoiceSummary summary = invoice.CalculateFare(rides);
 
+            int actualNoOfRides = summary.NoOfRides;
+            double actualTotalFare = summary.TotalFare;
+            double actualAvgFare = summary.AverageFare;
+
+            int expectedNoOfRides = 2;
+            double expectedTotalFare = 2200;
+            double expectedAvgFare = 1100;
+
+            Assert.AreEqual(expectedNoOfRides, actualNoOfRides);
+            Assert.AreEqual(expectedTotalFare, actualTotalFare);
+            Assert.AreEqual(expectedAvgFare, actualAvgFare);
         }
 
-        [TestMethod]
-        public void TestMethod6()
-        {
-            InvoiceGenerator invoice = new InvoiceGenerator();
 
-            try
-            {
-                Rides[] rides = { new Rides(15.5, 5), new Rides(0, 240) };
-
-                double actual = invoice.CalculateFair(rides);
-            }
-            catch (InvoiceGeneratorException ex)
-            {
-                Assert.AreEqual("Invalid Distance", ex.Message);
-            }
-
-        }
     }
 }

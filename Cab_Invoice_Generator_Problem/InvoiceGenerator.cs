@@ -6,7 +6,7 @@ namespace Cab_Invoice_Generator_Problem
         readonly int Cost_Per_KM = 10;
         readonly int Cost_Per_MINUTE = 1;
 
-        public double CalculateFair(double Distance, double Time)
+        public double CalculateFare(double Distance, double Time)
         {
             if (Time == 0)
             {
@@ -17,25 +17,27 @@ namespace Cab_Invoice_Generator_Problem
             {
                 throw new InvoiceGeneratorException(InvoiceGeneratorException.Type.INVALID_DISTANCE, "Invalid Distance");
             }
-            double fair = Distance * Cost_Per_KM + Time * Cost_Per_MINUTE;
-            return Math.Max(5, fair);
+            double Fare = Distance * Cost_Per_KM + Time * Cost_Per_MINUTE;
+            return Math.Max(5, Fare);
         }
 
-        public double CalculateFair(Rides[] rides)
+        public InvoiceSummary CalculateFare(Rides[] rides)
         {
             if (rides == null)
             {
                 throw new InvoiceGeneratorException(InvoiceGeneratorException.Type.NULL_RIDES, "Null Rides");
             }
 
-            double totalFair = 0;
+            double totalFare = 0;
 
-            foreach (var ride in rides)
+            foreach (Rides ride in rides)
             {
-                totalFair = totalFair + CalculateFair(ride.Distance, ride.Time);
+                totalFare = totalFare + CalculateFare(ride.Distance, ride.Time);
             }
 
-            return totalFair;
+            double AvgFare = totalFare / rides.Length;
+
+            return new InvoiceSummary(rides.Length, totalFare, AvgFare);
         }
 
     }
