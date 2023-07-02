@@ -21,5 +21,22 @@ namespace Cab_Invoice_Generator_Problem
             return Math.Max(5, fair);
         }
 
+        public double CalculateFair(Rides[] rides)
+        {
+            if (rides == null)
+            {
+                throw new InvoiceGeneratorException(InvoiceGeneratorException.Type.NULL_RIDES, "Null Rides");
+            }
+
+            double totalFair = 0;
+
+            foreach (var ride in rides)
+            {
+                totalFair = totalFair + CalculateFair(ride.Distance, ride.Time);
+            }
+
+            return totalFair;
+        }
+
     }
 }
