@@ -8,7 +8,8 @@ namespace Cab_Invoice_Generator_Problem
             INVALID_TIME,
             INVALID_DISTANCE,
             NULL_RIDES,
-            INVALID_USERID
+            INVALID_USERID,
+            INVALID_RIDE_TYPE
         }
         public Type type;
         public InvoiceGeneratorException(Type type, string message):base(message)

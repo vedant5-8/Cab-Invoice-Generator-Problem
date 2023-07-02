@@ -3,7 +3,7 @@ using Cab_Invoice_Generator_Problem;
 
 try
 {
-    InvoiceGenerator invoice = new InvoiceGenerator();
+    InvoiceGenerator invoice = new InvoiceGenerator(Ride_Type.NORMAL);
 
     Console.WriteLine("Fare of one ride: {0} ", invoice.CalculateFare(5, 10));
 
@@ -33,7 +33,6 @@ try
     Console.WriteLine("Number of Rides: {0}", summary.NoOfRides);
     Console.WriteLine("Total fare of multiple rides: {0}", summary.TotalFare);
     Console.WriteLine("Average of Fare per ride: {0}", summary.AverageFare);
-
 } 
 catch (InvoiceGeneratorException ex)
 {
