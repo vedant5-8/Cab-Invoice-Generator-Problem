@@ -57,13 +57,18 @@ namespace Cab_Invoice_Generator_Testing
 
             try
             {
-                Rides[] rides = null;
+                Rides[] rides = { new Rides(15.5, 5), new Rides(180, 240) };
 
-                invoice.CalculateFare(rides);
+                RideRepository repository = new RideRepository();
+
+                repository.AddRide("mike", rides);
+
+                List<Rides> listOfRides = repository.GetRides(UserID: "jack");
+
             }
             catch (InvoiceGeneratorException ex)
             {
-                Assert.AreEqual("Null Rides", ex.Message);
+                Assert.AreEqual("Invalid User ID", ex.Message);
             }
 
         }
@@ -75,7 +80,13 @@ namespace Cab_Invoice_Generator_Testing
 
             Rides[] rides = { new Rides(15.5, 5), new Rides(180, 240) };
 
-            InvoiceSummary summary = invoice.CalculateFare(rides);
+            RideRepository repository = new RideRepository();
+
+            repository.AddRide("mike", rides);
+
+            List<Rides> listOfRides = repository.GetRides(UserID: "mike");
+
+            InvoiceSummary summary = invoice.CalculateFare(listOfRides.ToArray());
 
             int actualNoOfRides = summary.NoOfRides;
             double actualTotalFare = summary.TotalFare;
@@ -89,7 +100,5 @@ namespace Cab_Invoice_Generator_Testing
             Assert.AreEqual(expectedTotalFare, actualTotalFare);
             Assert.AreEqual(expectedAvgFare, actualAvgFare);
         }
-
-
     }
 }

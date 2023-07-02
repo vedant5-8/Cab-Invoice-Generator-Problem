@@ -3,6 +3,7 @@ namespace Cab_Invoice_Generator_Problem
 {
     public class InvoiceGenerator
     {
+        RideRepository repository = new RideRepository();
         readonly int Cost_Per_KM = 10;
         readonly int Cost_Per_MINUTE = 1;
 
